@@ -1,0 +1,25 @@
+{
+  "name": "algorithm-snippet",
+  "version": "1.0.0",
+  "description": "## 算法列表",
+  "main": "deep-copy.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/slashhuang/algorithm-snippet.git"
+  },
+  "keywords": [
+    "algorithm"
+  ],
+  "author": "slashhuang",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/slashhuang/algorithm-snippet/issues"
+  },
+  "homepage": "https://github.com/slashhuang/algorithm-snippet#readme",
+  "dependencies": {
+    "lodash": "^4.17.4"
+  }
+}

@@ -8,3 +8,12 @@
 
 - [二维数组螺旋变幻](./spiral-matrix.js)
 
+## 算法对比
+
+```bash
+
+    # install lodash to make comparison
+    npm install
+
+```
+
