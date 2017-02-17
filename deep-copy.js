@@ -15,9 +15,20 @@
         }
     ]
  };
+ var simpleArr=[
+    {
+        a:[1,2,3]
+    },
+    {
+        b:1
+    },
+    {
+        p:[1,2]
+    }
+ ]
 
  var deepCopy = function(targetObj) {
-    var copiedObj = {};
+    var copiedObj = Array.isArray(targetObj)?[]:{};
     var ArrayDealer=function(arrayVal,copiedObj) {
         arrayVal.forEach(function(arrVal,index) {
                 copiedObj[index]={};
@@ -52,3 +63,4 @@
 };
 
  console.log(deepCopy(simpleObj));
+  console.log(deepCopy(simpleArr));
