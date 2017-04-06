@@ -97,10 +97,10 @@ var getUserProfile = function(uid){
           taskArr.splice(index,1);
       }
       //通知任务队列执行
-      let notify =dispatchTask=>list=>{
+      let notify = currentTask=>list=>{
           // task要和uid对应起来
-          dispatchTask.forEach(task=>task(list));
-          deleteTask(waitingTask,dispatchTask)
+          currentTask.dispatchTask.forEach(task=>task(list));
+          deleteTask(waitingTask,currentTask);
       }; 
       //合并uid请求
       let dispatchUidTask=(currentTask)=>{
@@ -110,7 +110,7 @@ var getUserProfile = function(uid){
                     resolve(dispatchUid);
                 }})
                 .then(requestUserProfile)
-                .then(notify(dispatchTask))
+                .then(notify(currentTask))
         }
       //过滤返回结果
       let filterResult = uid=>list=>{
