@@ -118,7 +118,6 @@ var getUserProfile = function(uid){
       //过滤返回结果
       let filterResult = uid=>{
           return list=>{
-            // console.log(uid,list); 
             return list.filter(profile=>profile.uid == uid)[0];
         }  
     }
@@ -146,26 +145,34 @@ async(()=>{
   //打印10
   userProfilePayLoad(10).then(profile=>console.log(profile.uid)).catch(console.log)
 },10)
-// async(()=>{
-//    //打印20
-//   userProfilePayLoad(20).then(profile=>console.log(profile.uid)).catch(console.log);
-// },20)
-// async(()=>{
-//    //打印30
-//   userProfilePayLoad(30).then(profile=>console.log(profile.uid)).catch(console.log);
-// },30)
-// async(()=>{
-//    //打印100
-//   userProfilePayLoad(100).then(profile=>console.log(profile.uid)).catch(console.log);
-// },100)
-// async(()=>{
-//    //打印150
-//   userProfilePayLoad(150).then(profile=>console.log(profile)).catch(console.log);
-// },150)
+async(()=>{
+   //打印20
+  userProfilePayLoad(20).then(profile=>console.log(profile.uid)).catch(console.log);
+},20)
+async(()=>{
+   //打印30
+  userProfilePayLoad(30).then(profile=>console.log(profile.uid)).catch(console.log);
+},30)
+async(()=>{
+   //打印100
+  userProfilePayLoad(100).then(profile=>console.log(profile.uid)).catch(console.log);
+},100)
+async(()=>{
+   //打印150
+  userProfilePayLoad(150).then(profile=>console.log(profile.uid)).catch(console.log);
+},150)
 async(()=>{
    //打印200
   userProfilePayLoad(200).then(profile=>console.log(profile.uid)).catch(console.log);
 },200)
+async(()=>{
+   //打印400
+  userProfilePayLoad(400).then(profile=>console.log(profile.uid)).catch(console.log);
+},400)
+async(()=>{
+   //打印1000
+  userProfilePayLoad(1000).then(profile=>console.log(profile.uid)).catch(console.log);
+},1000)
 
 
 
