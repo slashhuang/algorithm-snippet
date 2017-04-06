@@ -4,7 +4,7 @@
   "description": "## 算法列表",
   "main": "deep-copy.js",
   "scripts": {
-    "test": "nodemon ajax_all.js"
+    "test": "nodemon --inspect ajax_all.js"
   },
   "repository": {
     "type": "git",
