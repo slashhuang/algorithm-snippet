@@ -60,58 +60,84 @@ var getUserProfile = function(uid){
    * 17/4/6
    */
    let enqueueUid = [];
+   let enqueueTask = [];
+   let timer = null;
    return (uid)=>{
       //推送进队列
       enqueueUid.push(uid);
-      //过滤返回结果
-      let filterResult = list=>{
-          return list.filter(profile=>profile.uid== uid)[0];
+      //任务时间管理
+      if(!timer){
+        timer = setTimeout(()=>{
+            clearTimeout(timer);
+            timer = null;
+            dispatchUidTask();
+          },100)
       };
-      //分发resolve的逻辑
       let resolveLogic = (resolve,reject)=>{
-            if(enqueueUid.length>0){
-              //只有时间gap达到100ms才执行后续逻辑
-              setTimeout(resolve,100,enqueueUid)
-            }else{
-              reject();
-            }   
-      }
-      //组装Promise逻辑
-      return Promise.resolve({then:resolveLogic})
-                    .then((profileList)=>{
-                      //清空队列
-                      enqueueUid = [];
-                      return profileList
-                    })
+          resolve([].slice.call(enqueueUid));
+          //清空队列
+          enqueueUid = [];
+      };
+      let dispatchUidTask=()=>{
+         return Promise.resolve({then:resolveLogic})
                     .then(requestUserProfile)
                     .then(filterResult)
                     .catch(error=>{ //只处理真实的错误
-                      if(error){
-                         console.log(`${error.name}--${error.stack} `)
+                        if(error.name){
+                           return Promise.reject(`${error.name}--${error.stack} `)
+                        }else{
+                          return Promise.reject(error)
+                        }
+                    })
+                };
+
+      //过滤返回结果
+      let filterResult = list=>{
+          return list.filter(profile=>profile.uid == uid)[0];
+      }     
+      //组装Promise逻辑
+      return Promise.resolve({then:resolveLogic})
+                    .then(requestUserProfile)
+                    .then(filterResult)
+                    .catch(error=>{ //只处理真实的错误
+                      if(error.name){
+                         return Promise.reject(`${error.name}--${error.stack} `)
                       }else{
-                        console.log(`没有uid数据需要请求`)
+                        return Promise.reject(error)
                       }
                   })
       }
 };
-//------------- 测试区 ------------
+//-------------------------- 测试区 ------------------------------------
 let userProfilePayLoad = getUserProfile();
 //模拟异步请求
-let async = (fn)=>{
-  setTimeout(fn,30)
+let async = (fn,gap)=>{
+  setTimeout(fn,gap)
 };
 async(()=>{
-  //打印111
-  userProfilePayLoad(111).then(profile=>console.log(profile.uid));
-})
+  //打印10
+  userProfilePayLoad(10).then(profile=>console.log(profile.uid)).catch(console.log)
+},10)
 async(()=>{
-   //打印112
-  userProfilePayLoad(112).then(profile=>console.log(profile.uid));
-})
+   //打印20
+  userProfilePayLoad(20).then(profile=>console.log(profile.uid)).catch(console.log);
+},20)
 async(()=>{
-   //打印113
-  userProfilePayLoad(113).then(profile=>console.log(profile.uid));
-})
+   //打印30
+  userProfilePayLoad(30).then(profile=>console.log(profile.uid)).catch(console.log);
+},30)
+async(()=>{
+   //打印100
+  userProfilePayLoad(100).then(profile=>console.log(profile.uid)).catch(console.log);
+},100)
+async(()=>{
+   //打印150
+  userProfilePayLoad(150).then(profile=>console.log(profile.uid)).catch(console.log);
+},150)
+async(()=>{
+   //打印200
+  userProfilePayLoad(200).then(profile=>console.log(profile.uid)).catch(console.log);
+},200)
 
 
 
