@@ -78,16 +78,15 @@ var getUserProfile = function(uid){
               reject();
             }   
       }
-      //清空队列
-      let resetEnqueue = (profile)=>{
-        enqueueUid = [];
-        return profile
-      };
       //组装Promise逻辑
       return Promise.resolve({then:resolveLogic})
+                    .then((profileList)=>{
+                      //清空队列
+                      enqueueUid = [];
+                      return profileList
+                    })
                     .then(requestUserProfile)
                     .then(filterResult)
-                    .then(resetEnqueue)
                     .catch(error=>{ //只处理真实的错误
                       if(error){
                          console.log(`${error.name}--${error.stack} `)
