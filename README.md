@@ -2,7 +2,7 @@
 
 ## 算法列表
 
-- [阿里钉钉面试题之队列变幻]('./enqueue.js')
+- [阿里钉钉面试题之队列变幻](./enqueue.js)
 
 ![队列测试](./assets/enqueue.png)
 
