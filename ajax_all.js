@@ -57,9 +57,7 @@ var requestUserProfile = function(uidList){
 var getUserProfile = function(uid){
   /* 
    * @Author slashhuang
-   * 主功能必须满足如下两点:
-   *    1、将uid推送进requestUserProfile的参数数组
-   *    2、根据返回的数组数据进行match取回数据
+   * 17/4/6
    */
    let enqueueUid = [];
    return (uid)=>{
@@ -90,9 +88,11 @@ var getUserProfile = function(uid){
                     .catch(error=>{ //只处理真实的错误
                       if(error){
                          console.log(`${error.name}--${error.stack} `)
+                      }else{
+                        console.log(`没有uid数据需要请求`)
                       }
-                    })
-   }
+                  })
+      }
 };
 //------------- 测试区 ------------
 let userProfilePayLoad = getUserProfile();
