@@ -113,11 +113,9 @@ var getUserProfile = function(uid){
                 .then(notify(dispatchTask))
         }
       //过滤返回结果
-      let filterResult = uid=>{
-          return list=>{
+      let filterResult = uid=>list=>{
             return list.filter(profile=>profile.uid == uid)[0];
         }  
-    }
       //组装Promise逻辑
       return new Promise((resolve,reject)=>{
             //夺取Promise控制权
