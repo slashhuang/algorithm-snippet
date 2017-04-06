@@ -62,11 +62,8 @@ var getUserProfile = function(uid){
    //缓存所有的初始数据
    let enqueueUid = [];
    let enqueueTask = [];
-
    //任务等待区域
    let waitingTask = [];
-   //任务进行时
-   let dispatchTask ={};
    
    let timer = null;
    return (uid)=>{
@@ -78,8 +75,8 @@ var getUserProfile = function(uid){
             clearTimeout(timer);
             timer = null;
             //进入任务等待区
-            dispatchUid  = enqueueUid;
-            dispatchTask = enqueueTask;
+            let dispatchUid  = enqueueUid;
+            let dispatchTask = enqueueTask;
             //生成一组任务
             let currentTask = {
               'dispatchTask':dispatchTask,
@@ -92,7 +89,7 @@ var getUserProfile = function(uid){
             dispatchUidTask(currentTask);
           },100)
       }else{
-        console.log(`task already in queue`)
+        console.log(`task pushed to queue ,stay in pending state`)
       }
       //删除执行完的队列
       let deleteTask=(taskArr,task)=>{
