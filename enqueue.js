@@ -62,56 +62,54 @@ var getUserProfile = function(TaskInterval){
    * @Author slashhuang
    * 17/4/6
    */
-   //缓存所有的初始数据
+   //缓存任务队列
    let enqueueUid = [];
    let enqueueTask = [];
-   //任务等待区域
+   //设置定时器
    let timer = null;
+   //加载任务
    let runTask = ()=>{
         //清空定时器
         timer && clearTimeout(timer);
         timer = null;
-        //执行当前任务
-        dispatchUidTask({
-              'TaskArr':[].slice.call(enqueueTask),
-              'dispatchUid':[].slice.call(enqueueUid)
-        });
-        //清空缓存区
+        //复制任务
+        let dispatchUid = [].slice.call(enqueueUid);
+        let TaskArr = [].slice.call(enqueueTask);
+        //清空排队任务
         enqueueTask =[];
         enqueueUid = [];
-   };
-    //合并uid请求
-    let dispatchUidTask=(currentTask)=>{
-        let dispatchUid = currentTask['dispatchUid'];
-        let TaskArr = currentTask['TaskArr'];
+        //执行uid列表请求任务
         Promise.resolve(dispatchUid)
                .then(requestUserProfile)
                //通知任务队列执行
                .then(list=>TaskArr.forEach(task=>task(list)))
-        }
-    let loadTask = (uid)=>{
+   };
+   //加载任务
+  let loadTask = (uid)=>{
         //满100就执行任务
         if(enqueueUid.length>99){
               console.log('------- length > 100')
               runTask()
         }else if(!timer){
             timer = setTimeout(()=>{
-                console.log('------- starting setTimeout task')
-                runTask()
+              console.log('------- starting setTimeout task')
+              runTask()
             },TaskInterval)
         }
     }
    return (uid)=>{
-      //返回Promise任务，将resolve推送进enqueueTask队列
       return new Promise((resolve,reject)=>{
-            //推送任务列表和uid列表
-            enqueueTask.push(resolve);
+            //获取当前任务索引，改造resolve传递的数据
+            let resolver = ((index)=>list=>{
+               resolve(list[index])
+            })(enqueueTask.length);
+            //将resolve推送进enqueueTask队列
+            enqueueTask.push(resolver)
+            //推送uid列表
             enqueueUid.push(uid);
             //加载任务
             loadTask(uid);
-        }).then((list)=>{
-            return list.filter(profile=>profile.uid == uid)[0];
-          })
+        })
           .catch(error=>{
               if(error && error.stack){
                   return Promise.reject(`${error.name}--${error.stack} `)
@@ -131,7 +129,7 @@ let _async = (fn,gap)=>{
 }
 
 // ------测试1   105次任务
-let TaskNum = 105;
+let TaskNum = 5;
 while(TaskNum>0){
   (taskNum=> _async(()=>{
     //打印1到105,总的任务执行次数2次
