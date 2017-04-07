@@ -121,25 +121,36 @@ var getUserProfile = function(TaskInterval){
           })
     }
 };
-//-------------------------- 测试区 ------------------------------------
+//-------------------------- 测试区 ---- 总共两个测试用例----------------------------------
 //110毫秒的任务间隔
-let TaskNum = 105;
 let TaskInterval = 110;
 let userProfilePayLoad = getUserProfile(TaskInterval);
 //模拟异步请求
 let _async = (fn,gap)=>{
   setTimeout(fn,gap)
 }
+
+// ------测试1   105次任务
+let TaskNum = 105;
 while(TaskNum>0){
   (taskNum=> _async(()=>{
-    /*
-     * 打印1到105
-     * 任务执行次数2次
-     */
+    //打印1到105,总的任务执行次数2次
     userProfilePayLoad(taskNum).then(profile=>console.log(profile.uid)).catch(console.log)
   },TaskNum))(TaskNum)
   TaskNum--
 };
+// ------测试2   1秒后模拟用户点击执行 310次任务
+setTimeout(()=>{
+  let TaskNum = 310
+  while(TaskNum>0){
+    (taskNum=> _async(()=>{
+      //打印1到105,总的任务执行次数2次
+      userProfilePayLoad(taskNum).then(profile=>console.log('--another'+profile.uid)).catch(console.log)
+    },TaskNum))(TaskNum)
+    TaskNum--
+  };
+},1000)
+
 
 
 
