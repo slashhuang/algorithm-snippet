@@ -98,6 +98,9 @@ var getUserProfile = function(TaskInterval){
         }
     }
    return (uid)=>{
+      if(uid<0){
+        return Promise.reject(`invalid uid -- ${uid}`)
+      }
       return new Promise((resolve,reject)=>{
             //获取当前任务索引，改造resolve传递的数据
             let task = index=>list=>{
@@ -130,24 +133,25 @@ let _async = (fn,gap)=>{
 
 // ------测试1   105次任务 延时递归
 let TaskNum = 5;
-while(TaskNum>0){
+while(TaskNum>-10){
   (taskNum=> _async(()=>{
     //打印1到105,总的任务执行次数2次
-    userProfilePayLoad(taskNum).then(profile=>console.log(profile.uid)).catch(console.log)
+    userProfilePayLoad(taskNum).then(profile=>console.log(profile.uid))
+                               .catch((error)=>console.log(`error -- ${error}`))
   },TaskNum))(TaskNum)
   TaskNum--
 };
 // ------测试2   1秒后模拟用户点击执行 310次任务 延时1ms的任务
-setTimeout(()=>{
-  let TaskNum = 310
-  while(TaskNum>0){
-    (taskNum=> _async(()=>{
-      //打印1到105,总的任务执行次数2次
-      userProfilePayLoad(taskNum).then(profile=>console.log('--another'+profile.uid)).catch(console.log)
-    },1))(TaskNum)
-    TaskNum--
-  };
-},1000)
+// setTimeout(()=>{
+//   let TaskNum = 310
+//   while(TaskNum>0){
+//     (taskNum=> _async(()=>{
+//       //打印1到105,总的任务执行次数2次
+//       userProfilePayLoad(taskNum).then(profile=>console.log('--another'+profile.uid)).catch(console.log)
+//     },1))(TaskNum)
+//     TaskNum--
+//   };
+// },1000)
 
 
 
