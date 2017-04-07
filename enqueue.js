@@ -100,11 +100,11 @@ var getUserProfile = function(TaskInterval){
    return (uid)=>{
       return new Promise((resolve,reject)=>{
             //获取当前任务索引，改造resolve传递的数据
-            let resolver = ((index)=>list=>{
+            let task = ((index)=>list=>{
                resolve(list[index])
             })(enqueueTask.length);
             //将resolve推送进enqueueTask队列
-            enqueueTask.push(resolver)
+            enqueueTask.push(task)
             //推送uid列表
             enqueueUid.push(uid);
             //加载任务
